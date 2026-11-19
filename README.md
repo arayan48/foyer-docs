@@ -9,3 +9,8 @@ npm install
 npm run dev     # http://localhost:3000
 npm run build
 ```
+
+## Coolify
+1. Nouvelle ressource > dépôt `arayan48/foyer-docs`, build pack **Dockerfile**, dossier de base `/`.
+2. Port exposé : `3000`.
+3. Domaine : `https://docs.foyer.cfd`.
