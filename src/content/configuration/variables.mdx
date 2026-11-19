@@ -1,0 +1,35 @@
+---
+title: "Variables d'environnement"
+updatedAt: "2026-11-20"
+summary: "Changer le dossier des données ou l'adresse d'écoute de l'agent."
+navLabel: "Variables"
+navIcon: "config"
+---
+
+| Variable | Par défaut | Rôle |
+|---|---|---|
+| `FOYER_DATA` | `C:\Foyer` ou `/var/lib/foyer` | Dossier des données : jeton, certificat, serveurs |
+| `FOYER_ADDR` | `0.0.0.0:7878` | Adresse et port d'écoute de l'agent |
+
+## Exemple sous Linux
+
+Pour mettre les données sur un autre disque, éditez le service :
+
+```bash
+sudo systemctl edit foyer
+```
+
+Ajoutez :
+
+```ini
+[Service]
+Environment=FOYER_DATA=/mnt/jeux/foyer
+```
+
+Puis redémarrez :
+
+```bash
+sudo systemctl restart foyer
+```
+
+Un nouveau dossier de données crée un nouveau jeton et un nouveau certificat. L'appli demandera de valider la nouvelle empreinte.

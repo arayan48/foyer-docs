@@ -1,0 +1,61 @@
+---
+title: "FiveM"
+updatedAt: "2026-11-20"
+summary: "Serveur FiveM : clé de licence, limites de joueurs, RAM et processeur selon le type de serveur."
+navLabel: "FiveM"
+navIcon: "components"
+---
+
+Foyer installe la version **recommandée** du serveur FiveM (FXServer), avec ou sans txAdmin. Sans txAdmin, vous pouvez partir d'un serveur vide ou des frameworks **ESX** ou **QBCore**, avec une base MariaDB préparée.
+
+## Avant de commencer
+
+- **Une clé de licence** gratuite, à créer sur le [portail Cfx.re](https://portal.cfx.re) avec votre compte Cfx.re.
+- **Une copie de GTA V** légitime pour les joueurs.
+
+## Limite de joueurs
+
+Le nombre de places dépend de Cfx.re, pas de la machine :
+
+| Abonnement | Places maximum |
+|---|---|
+| Gratuit, sans OneSync | 32 |
+| Gratuit, avec OneSync | 48 |
+| Element Club Argentum | 64 |
+| Element Club Aurum | 128 |
+
+## Combien de joueurs ?
+
+FiveM dépend surtout du nombre et de la qualité des scripts. À joueurs égaux, un serveur RP chargé demande trois à quatre fois plus qu'un serveur vide.
+
+| Joueurs | Profil | Cœurs | RAM du serveur |
+|---|---|---|---|
+| 1 à 20 | Serveur vide ou peu de scripts | 2 à 4 | 4 à 8 Go |
+| 20 à 32 | Quelques scripts (métiers, garages) | 4 à 6 | 8 à 12 Go |
+| 32 à 48 | RP ESX ou QBCore classique | 6 à 8 | 12 à 16 Go |
+| 48 à 64 | Gros RP (téléphone, inventaire, MDT) | 8, fréquence élevée | 16 à 24 Go |
+
+Ajoutez **1 à 2 Go** pour la base de données MariaDB avec ESX ou QBCore.
+
+**Exemple : 2 cœurs et 4 Go.** Suffisant pour un serveur de test ou une dizaine de joueurs sans framework. Pas assez pour un RP ESX ou QBCore : visez au moins 4 cœurs et 8 Go.
+
+## Ce qui consomme
+
+- **Les scripts qui tournent en boucle.** Repérez-les avec la commande `resmon` en jeu ou le moniteur de txAdmin.
+- **Les véhicules et cartes ajoutés.** Ils pèsent sur le disque, le téléchargement des joueurs et la mémoire.
+- **La base de données.** Des requêtes mal indexées ralentissent tout le serveur.
+
+## Ports
+
+| Service | Port | Protocole |
+|---|---|---|
+| Jeu | `30120` | TCP et UDP |
+| txAdmin | `40120` | TCP |
+
+Seul le port du jeu est à ouvrir aux joueurs. Gardez txAdmin en local ou derrière un VPN.
+
+## Premier lancement avec txAdmin
+
+1. Démarrez le serveur depuis Foyer.
+2. Ouvrez txAdmin depuis l'appli : un code PIN s'affiche dans la console.
+3. Connectez votre compte Cfx.re, puis suivez l'assistant de txAdmin et collez votre clé de licence.

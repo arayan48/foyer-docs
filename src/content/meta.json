@@ -1,0 +1,8 @@
+{
+  "pages": {
+    "introduction": 1,
+    "installation": 2,
+    "configuration": 3,
+    "serveurs": 4
+  }
+}

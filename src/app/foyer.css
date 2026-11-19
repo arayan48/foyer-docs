@@ -1,0 +1,21 @@
+/* Charte Foyer 1.0 : accent terracotta */
+:root {
+  --brand-solid-strong: #c67139;
+  --brand-solid-medium: #d27f47;
+  --brand-on-solid-strong: #201e1d;
+}
+[data-theme="light"] {
+  --brand-solid-strong: #b05f2b;
+  --brand-solid-medium: #9d5324;
+  --brand-on-solid-strong: #fffaf2;
+}
+[data-theme="dark"] { --page-background: #201e1d; }
+[data-theme="light"] { --page-background: #f7f1e7; }
+
+/* Tableaux Markdown */
+article table, main table { width: 100%; border-collapse: collapse; margin: 8px 0 20px; font-size: 0.9rem; }
+main th, main td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--neutral-alpha-medium); vertical-align: top; }
+main th { font-weight: 600; color: var(--neutral-on-background-strong); }
+main td { color: var(--neutral-on-background-medium); }
+main .mdx-table { overflow-x: auto; }
+@media (max-width: 640px) { main table { display: block; overflow-x: auto; white-space: nowrap; } }

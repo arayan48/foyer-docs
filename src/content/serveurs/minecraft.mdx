@@ -1,0 +1,58 @@
+---
+title: "Minecraft"
+updatedAt: "2026-11-20"
+summary: "Serveur Paper : RAM et processeur selon le nombre de joueurs, réglages qui comptent."
+navLabel: "Minecraft"
+navIcon: "components"
+---
+
+Foyer installe **Paper**, une version optimisée du serveur Minecraft officiel, compatible avec les plugins Bukkit et Spigot. Java est téléchargé automatiquement dans la bonne version (Java 21 pour 1.20.5 à 1.21, Java 25 pour les versions récentes).
+
+## Combien de joueurs ?
+
+Pour un serveur Paper en survie, distance de vue à 10, avec quelques plugins courants :
+
+| Joueurs simultanés | RAM du serveur | Cœurs | Profil |
+|---|---|---|---|
+| 1 à 5 | 2 à 3 Go | 2 | Entre amis, peu de plugins |
+| 5 à 15 | 4 Go | 2 à 4 | Petite communauté, plugins légers |
+| 15 à 30 | 6 Go | 4 | Communauté active, 20 à 40 plugins |
+| 30 à 60 | 8 à 10 Go | 4, fréquence élevée | Serveur public, mini-jeux |
+| 60 et plus | 10 à 12 Go | 4 et plus | Prévoir plusieurs serveurs reliés par un proxy |
+
+**Exemple : 2 cœurs et 4 Go.** Comptez 10 à 15 joueurs confortables, jusqu'à 20 en baissant la distance de vue à 8. Les fermes automatiques et les mondes très explorés réduisent ce chiffre.
+
+Au-delà de 12 Go, ajouter de la RAM n'aide plus : c'est le processeur qui limite. Un serveur Minecraft fait tourner le monde sur un seul cœur, donc la fréquence compte plus que le nombre de cœurs.
+
+## Ce qui consomme
+
+- **Les joueurs qui explorent.** Générer de nouveaux chunks coûte cher. Prégénérez le monde avec le plugin Chunky avant d'ouvrir.
+- **Les entités.** Fermes à mobs, fermes à villageois, objets au sol.
+- **Les redstone et hoppers.** Une grosse usine à hoppers peut faire chuter les TPS.
+- **Certains plugins.** Un plugin mal écrit coûte plus que dix joueurs.
+
+## Réglages à connaître
+
+Dans l'onglet Propriétés de l'appli (`server.properties`) :
+
+| Clé | Conseil |
+|---|---|
+| `view-distance` | 8 à 10. Chaque cran de plus augmente fortement la charge. |
+| `simulation-distance` | 6 à 8. Distance où les mobs et les cultures sont actifs. |
+| `max-players` | Selon le tableau ci-dessus. |
+| `online-mode` | `true` pour vérifier les comptes Mojang. |
+| `white-list` | `true` pour un serveur entre amis. |
+
+## Vérifier que ça tient
+
+Dans la console, tapez :
+
+```text
+tps
+```
+
+Le serveur doit afficher **20 TPS**. En dessous de 18 en continu, les joueurs ressentent des ralentissements : baissez la distance de vue ou cherchez la cause avec le profileur intégré de Paper (`spark profiler`).
+
+## Ports
+
+TCP `25565` par défaut. Pour plusieurs serveurs, utilisez `25566`, `25567`, etc.
