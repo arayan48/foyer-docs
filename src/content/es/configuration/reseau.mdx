@@ -12,8 +12,6 @@ navIcon: "globe"
 |---|---|---|---|
 | Agente Foyer | `7878` | TCP | **No, nunca** |
 | Minecraft | `25565` | TCP | Sí, para los jugadores |
-| FiveM | `30120` | TCP y UDP | Sí, para los jugadores |
-| txAdmin (FiveM) | puerto FiveM + 10000, es decir `40120` | TCP | No, salvo necesidad |
 
 ## Firewall de la máquina
 
@@ -31,8 +29,6 @@ En Linux, con `ufw`:
 ```bash
 sudo ufw allow 25565/tcp
 ```
-
-Para FiveM, abra `30120` en TCP **y** en UDP.
 
 ## Recibir jugadores del exterior
 

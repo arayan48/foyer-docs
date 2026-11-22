@@ -1,12 +1,12 @@
 ---
-title: "FiveM"
+title: "FiveM (próximamente)"
 updatedAt: "2026-11-22"
-summary: "Servidor FiveM: clave de licencia, límites de jugadores, RAM y procesador según el tipo de servidor."
-navLabel: "FiveM"
+summary: "FiveM aún no es compatible con Foyer: cómo preparar su máquina mientras tanto."
+navLabel: "FiveM (próximamente)"
 navIcon: "components"
 ---
 
-Foyer instala la versión **recomendada** del servidor FiveM (FXServer), con o sin txAdmin. Sin txAdmin, puede partir de un servidor vacío o de los frameworks **ESX** o **QBCore**, con una base MariaDB preparada.
+**FiveM aún no es compatible con Foyer.** Aparece en la aplicación con la mención «Bientôt» (próximamente). Esta página ayuda a preparar la máquina mientras tanto.
 
 ## Antes de empezar
 
@@ -16,8 +16,6 @@ Foyer instala la versión **recomendada** del servidor FiveM (FXServer), con o s
 ## Límite de jugadores
 
 El número de plazas depende de Cfx.re, no de la máquina. Por defecto, un servidor acepta **48 jugadores** con OneSync Infinity. Una suscripción Element Club permite ir más allá, hasta 2048 plazas según el plan. Los niveles actuales están en la [página oficial](https://fivem.net/server-hosting).
-
-Foyer activa OneSync en los servidores creados sin txAdmin.
 
 ## ¿Cuántos jugadores?
 
@@ -32,7 +30,7 @@ FiveM depende sobre todo del número y la calidad de los scripts. Con los mismos
 
 Referencias adaptadas de las guías de dos proveedores, [ElypseCloud](https://wiki.elypsecloud.com/en/fivem/ram-cpu-players/) y [Flux](https://runonflux.com/games/fivem/fivem-server-requirements). Son estimaciones, no mediciones.
 
-Añada **1 a 2 GB** para la base de datos MariaDB, que Foyer instala con txAdmin, ESX o QBCore.
+Añada **1 a 2 GB** para la base de datos MariaDB con ESX o QBCore.
 
 **Ejemplo: 2 núcleos y 4 GB.** Suficiente para un servidor de pruebas o unos diez jugadores sin framework. No basta para un RP ESX o QBCore: cuente con al menos 4 núcleos y 8 GB.
 
@@ -41,18 +39,3 @@ Añada **1 a 2 GB** para la base de datos MariaDB, que Foyer instala con txAdmin
 - **Los scripts que se ejecutan en bucle.** Localícelos con el comando `resmon` en el juego o el monitor de txAdmin.
 - **Los vehículos y mapas añadidos.** Pesan en el disco, en la descarga de los jugadores y en la memoria.
 - **La base de datos.** Las consultas mal indexadas ralentizan todo el servidor.
-
-## Puertos
-
-| Servicio | Puerto | Protocolo |
-|---|---|---|
-| Juego | `30120` | TCP y UDP |
-| txAdmin | `40120` | TCP |
-
-Solo hay que abrir a los jugadores el puerto del juego. Mantenga txAdmin en local o detrás de una VPN.
-
-## Primer inicio con txAdmin
-
-1. Inicie el servidor desde Foyer.
-2. Abra txAdmin desde la aplicación: aparece un código PIN en la consola.
-3. Conecte su cuenta de Cfx.re, siga el asistente de txAdmin y pegue su clave de licencia.

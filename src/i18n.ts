@@ -58,7 +58,7 @@ export function alternates(lang: Locale, path: string) {
 const fr = {
   metaTitle: "Documentation – Foyer",
   metaDescription: "Documentation de Foyer : installation, configuration et dimensionnement des serveurs de jeu.",
-  badge: "Minecraft et FiveM, sur Windows et Linux",
+  badge: "Minecraft, sur Windows et Linux",
   heroTitle: "Documentation de Foyer",
   heroText: "Installez Foyer, configurez votre machine et choisissez la bonne RAM pour vos serveurs de jeu.",
   start: "Commencer",
@@ -100,7 +100,7 @@ export type Dictionary = typeof fr;
 const en: Dictionary = {
   metaTitle: "Documentation – Foyer",
   metaDescription: "Foyer documentation: installation, configuration and sizing for game servers.",
-  badge: "Minecraft and FiveM, on Windows and Linux",
+  badge: "Minecraft, on Windows and Linux",
   heroTitle: "Foyer documentation",
   heroText: "Install Foyer, set up your machine and pick the right amount of RAM for your game servers.",
   start: "Get started",
@@ -140,7 +140,7 @@ const en: Dictionary = {
 const es: Dictionary = {
   metaTitle: "Documentación – Foyer",
   metaDescription: "Documentación de Foyer: instalación, configuración y dimensionamiento de servidores de juego.",
-  badge: "Minecraft y FiveM, en Windows y Linux",
+  badge: "Minecraft, en Windows y Linux",
   heroTitle: "Documentación de Foyer",
   heroText: "Instale Foyer, configure su máquina y elija la RAM adecuada para sus servidores de juego.",
   start: "Empezar",
