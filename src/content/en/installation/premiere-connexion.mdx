@@ -1,0 +1,30 @@
+---
+title: "First connection"
+updatedAt: "2026-11-22"
+summary: "Link the app to the agent with the address, token and fingerprint."
+navLabel: "First connection"
+navIcon: "security"
+---
+
+## On the server machine itself
+
+The app installed by `Foyer-Serveur.exe` reads the token on its own. Open it and you land on the dashboard.
+
+## From another PC
+
+1. Open the app and enter the machine address, for example `192.168.1.20:7878`.
+2. Paste the token:
+   - Windows: `C:\Foyer\token`
+   - Linux: `/var/lib/foyer/token`
+3. The app shows the certificate fingerprint. Compare it with the `fingerprint` file on the machine.
+4. If they match, accept.
+
+The app then remembers this fingerprint. If it changes, the connection is refused: someone may be sitting between you and the agent.
+
+## It does not connect
+
+| Symptom | Likely cause |
+|---|---|
+| Timeout | Port `7878` closed in the firewall, or wrong IP address |
+| Token refused | Incomplete token, or agent reinstalled with a new token |
+| Different fingerprint | Agent reinstalled or data folder erased: check, then accept the new one |

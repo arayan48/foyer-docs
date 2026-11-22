@@ -1,0 +1,30 @@
+---
+title: "Première connexion"
+updatedAt: "2026-11-22"
+summary: "Relier l'appli à l'agent avec l'adresse, le jeton et l'empreinte."
+navLabel: "Première connexion"
+navIcon: "security"
+---
+
+## Sur la machine serveur elle-même
+
+L'appli installée par `Foyer-Serveur.exe` lit le jeton toute seule. Ouvrez-la : vous arrivez directement sur le tableau de bord.
+
+## Depuis un autre PC
+
+1. Ouvrez l'appli et entrez l'adresse de la machine, par exemple `192.168.1.20:7878`.
+2. Collez le jeton :
+   - Windows : `C:\Foyer\token`
+   - Linux : `/var/lib/foyer/token`
+3. L'appli affiche l'empreinte du certificat. Comparez-la à celle du fichier `fingerprint` sur la machine.
+4. Si elles sont identiques, acceptez.
+
+L'appli garde ensuite cette empreinte. Si elle change, la connexion est refusée : quelqu'un s'intercale peut-être entre vous et l'agent.
+
+## Ça ne se connecte pas
+
+| Symptôme | Cause probable |
+|---|---|
+| Délai dépassé | Port `7878` fermé dans le pare-feu, ou mauvaise adresse IP |
+| Jeton refusé | Jeton incomplet, ou agent réinstallé avec un nouveau jeton |
+| Empreinte différente | Agent réinstallé ou dossier de données effacé : vérifiez puis acceptez la nouvelle |

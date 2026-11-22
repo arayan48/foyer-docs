@@ -1,0 +1,44 @@
+---
+title: "Servidor Windows"
+updatedAt: "2026-11-22"
+summary: "Instalar el agente de Foyer en la máquina Windows que aloja los juegos."
+navLabel: "Servidor Windows"
+navIcon: "server"
+---
+
+`Foyer-Serveur.exe` instala la aplicación y el agente en la máquina que ejecutará los juegos.
+
+## Instalar
+
+1. Descargue `Foyer-Serveur.exe` desde la [última versión](https://github.com/arayan48/foyer/releases/latest).
+2. Ejecútelo y acepte la solicitud de permisos de administrador.
+3. Complete el asistente.
+
+El instalador:
+
+- crea una tarea programada que inicia el agente al arrancar Windows, incluso sin sesión abierta;
+- abre el puerto `7878` (TCP) en el firewall de Windows, solo para la red local;
+- crea la carpeta de datos `C:\Foyer`.
+
+## Archivos creados
+
+| Archivo | Función |
+|---|---|
+| `C:\Foyer\token` | Token que se introduce en la aplicación |
+| `C:\Foyer\fingerprint` | Huella del certificado, para comparar al conectarse |
+| `C:\Foyer\cert.pem`, `key.pem` | Certificado HTTPS del agente |
+| `C:\Foyer\servers.json` | Lista de servidores |
+| `C:\Foyer\servers\<id>\` | Archivos de cada servidor (mundo, plugins, recursos) |
+| `C:\Foyer\runtime\` | Java compartido por los servidores Minecraft |
+
+Para leer el token:
+
+```powershell
+Get-Content C:\Foyer\token
+```
+
+## Sistemas compatibles
+
+Windows 10, Windows 11 y Windows Server, de 64 bits. Foyer se prueba en Windows Server 2025.
+
+Para una máquina dedicada, sirven tanto Windows Server como Windows 11 Pro. Desactive la suspensión: un servidor suspendido desconecta a los jugadores.

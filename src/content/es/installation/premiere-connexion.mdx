@@ -1,0 +1,30 @@
+---
+title: "Primera conexión"
+updatedAt: "2026-11-22"
+summary: "Vincular la aplicación con el agente mediante la dirección, el token y la huella."
+navLabel: "Primera conexión"
+navIcon: "security"
+---
+
+## En la propia máquina servidor
+
+La aplicación instalada por `Foyer-Serveur.exe` lee el token por sí sola. Ábrala y llegará directamente al panel.
+
+## Desde otro PC
+
+1. Abra la aplicación e introduzca la dirección de la máquina, por ejemplo `192.168.1.20:7878`.
+2. Pegue el token:
+   - Windows: `C:\Foyer\token`
+   - Linux: `/var/lib/foyer/token`
+3. La aplicación muestra la huella del certificado. Compárela con el archivo `fingerprint` de la máquina.
+4. Si coinciden, acepte.
+
+Después, la aplicación recuerda esa huella. Si cambia, la conexión se rechaza: puede que alguien se interponga entre usted y el agente.
+
+## No se conecta
+
+| Síntoma | Causa probable |
+|---|---|
+| Tiempo agotado | Puerto `7878` cerrado en el firewall, o dirección IP incorrecta |
+| Token rechazado | Token incompleto, o agente reinstalado con un token nuevo |
+| Huella diferente | Agente reinstalado o carpeta de datos borrada: compruébelo y acepte la nueva |

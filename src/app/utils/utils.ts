@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 import { Schemes } from "@once-ui-system/core";
+import type { Locale } from "@/i18n";
 
 interface Post {
   slug: string;
@@ -20,9 +21,9 @@ interface Post {
   };
 }
 
-export function getPages(customPath = ["src", "content"]): Post[] {
-  const postsDir = path.join(process.cwd(), ...customPath);
-  const contentBasePath = path.join(process.cwd(), "src", "content");
+export function getPages(lang: Locale, customPath: string[] = []): Post[] {
+  const contentBasePath = path.join(process.cwd(), "src", "content", lang);
+  const postsDir = path.join(contentBasePath, ...customPath);
   
   // Vérifier si le répertoire existe avant d'essayer de le lire
   if (!fs.existsSync(postsDir)) {
@@ -50,7 +51,7 @@ export function getPages(customPath = ["src", "content"]): Post[] {
 
     if (stat.isDirectory()) {
       try {
-        posts.push(...getPages([...customPath, file]));
+        posts.push(...getPages(lang, [...customPath, file]));
       } catch (error) {
         console.warn(`Erreur lors de la lecture du répertoire : ${filePath}`, error);
       }
@@ -167,17 +168,17 @@ export function sortPages(pages: Post[], sortType: SortType = 'order'): Post[] {
 }
 
 // Fonction pour obtenir les pages adjacentes en fonction du slug courant
-export function getAdjacentPages(currentSlug: string, sortType: SortType = 'section') {
+export function getAdjacentPages(lang: Locale, currentSlug: string, sortType: SortType = 'section') {
   try {
     // Récupérer toutes les pages
-    const allPages = getPages();
+    const allPages = getPages(lang);
 
     // D'abord, créer un tableau aplati représentant l'ordre exact de la barre latérale
     const sidebarOrderedPages: Post[] = [];
 
     // Lire le meta.json racine pour l'ordre des sections
     let rootMetaData: { pages?: Record<string, number> } = {};
-    const rootMetaPath = path.join(process.cwd(), "src", "content", "meta.json");
+    const rootMetaPath = path.join(process.cwd(), "src", "content", lang, "meta.json");
     if (fs.existsSync(rootMetaPath)) {
       try {
         rootMetaData = JSON.parse(fs.readFileSync(rootMetaPath, 'utf8'));
@@ -243,7 +244,7 @@ export function getAdjacentPages(currentSlug: string, sortType: SortType = 'sect
     sortedSections.forEach(({ section, pages }) => {
       // Essayer de lire le meta.json de la section pour l'ordre des pages dans la section
       let sectionMetaData: { pages?: Record<string, number>, order?: number, folders?: Record<string, number> } = {};
-      const sectionMetaPath = path.join(process.cwd(), "src", "content", section, "meta.json");
+      const sectionMetaPath = path.join(process.cwd(), "src", "content", lang, section, "meta.json");
 
       if (fs.existsSync(sectionMetaPath)) {
         try {
@@ -324,7 +325,7 @@ export function getAdjacentPages(currentSlug: string, sortType: SortType = 'sect
           // Essayer de lire le meta.json du dossier pour les pages imbriquées
           if (folder !== '') {
             let folderMetaData: { pages?: Record<string, number> } = {};
-            const folderMetaPath = path.join(process.cwd(), "src", "content", section, folder, "meta.json");
+            const folderMetaPath = path.join(process.cwd(), "src", "content", lang, section, folder, "meta.json");
 
             if (fs.existsSync(folderMetaPath)) {
               try {
@@ -436,60 +437,8 @@ export function getAdjacentPages(currentSlug: string, sortType: SortType = 'sect
   }
 }
 
-// Fonction pour obtenir toutes les sections avec leurs pages
-export function getSections(sortType: SortType = 'order'): { section: string, pages: Post[] }[] {
-  try {
-    // Récupérer toutes les pages
-    const allPages = getPages();
-
-    // Grouper les pages par section
-    const sectionMap = new Map<string, Post[]>();
-
-    allPages.forEach(page => {
-      const section = page.slug.split('/')[0];
-      if (!sectionMap.has(section)) {
-        sectionMap.set(section, []);
-      }
-      sectionMap.get(section)!.push(page);
-    });
-
-    // Trier les sections selon l'ordre du meta.json si disponible
-    const sections: { section: string, pages: Post[] }[] = [];
-
-    // Essayer de lire le meta.json racine pour l'ordre des sections
-    let rootMetaData: { sections?: Record<string, number> } = {};
-    const rootMetaPath = path.join(process.cwd(), "src", "content", "meta.json");
-    if (fs.existsSync(rootMetaPath)) {
-      try {
-        rootMetaData = JSON.parse(fs.readFileSync(rootMetaPath, 'utf8'));
-      } catch (error) {
-        console.warn(`Erreur lors de la lecture du meta.json racine : ${rootMetaPath}`, error);
-      }
-    }
-
-    // Convertir la map en tableau et trier les sections
-    for (const [section, pages] of sectionMap.entries()) {
-      sections.push({
-        section,
-        pages: sortPages(pages, sortType)
-      });
-    }
-
-    // Trier les sections selon l'ordre du meta.json si disponible, sinon alphabétiquement
-    return sections.sort((a, b) => {
-      const aOrder = rootMetaData.sections?.[a.section];
-      const bOrder = rootMetaData.sections?.[b.section];
-
-      if (aOrder !== undefined && bOrder !== undefined) {
-        return aOrder - bOrder;
-      }
-      if (aOrder !== undefined) return -1;
-      if (bOrder !== undefined) return 1;
-
-      return a.section.localeCompare(b.section);
-    });
-  } catch (error) {
-    console.error("Erreur lors de la récupération des sections :", error);
-    return [];
-  }
+/** Titre traduit d'une section, lu dans son meta.json. */
+export function sectionTitle(lang: Locale, section: string): string {
+  const file = path.join(process.cwd(), "src", "content", lang, section, "meta.json");
+  return (fs.existsSync(file) && JSON.parse(fs.readFileSync(file, "utf8")).title) || section;
 }

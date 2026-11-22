@@ -1,0 +1,29 @@
+---
+title: "Server settings"
+updatedAt: "2026-11-22"
+summary: "RAM, processor, automatic start and restart after a crash."
+navLabel: "Server settings"
+navIcon: "config"
+---
+
+Each server has its own settings in the app.
+
+| Setting | Default | Effect |
+|---|---|---|
+| RAM | 4 GB | Minecraft: memory given to Java (`-Xms` and `-Xmx`), reserved at launch. From 512 MB to 64 GB. FiveM: only used if the RAM is capped. |
+| Cap RAM | No | Limits memory. Minecraft keeps a 25% margin (at least 512 MB) above the chosen RAM, because Java uses memory outside the heap. |
+| CPU limit | None | From 5 to 100% of the machine's processor. |
+| Cores | All | Pins the server to certain cores, useful with several servers. |
+| Automatic start | No | Starts the server when the machine boots. |
+| Restart after a crash | Yes | Restarts after 5 s, at most 3 attempts in 10 minutes. |
+| Port | Per game | Minecraft: editable while the server is stopped. FiveM: set in txAdmin. |
+
+## Several servers on one machine
+
+- Leave at least 2 GB of RAM free for the system.
+- Give each server different ports.
+- On a processor with 8 cores or more, spread the servers over separate cores so they do not get in each other's way.
+
+## Clean shutdown
+
+Foyer first sends the game's stop command (`stop` for Minecraft), then waits 30 seconds for the world to be saved. After that, the process is killed.

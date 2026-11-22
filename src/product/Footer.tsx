@@ -1,3 +1,4 @@
+import { type Locale, localePath, t } from "@/i18n";
 import { layout, social } from "@/resources/once-ui.config";
 import {
   Button,
@@ -9,12 +10,13 @@ import {
   ThemeSwitcher,
 } from "@once-ui-system/core";
 
-export const Footer = () => {
+export const Footer = ({ lang }: { lang: Locale }) => {
+  const d = t(lang);
   return (
     <Column gap="40" fillWidth paddingY="xl" paddingX="l" horizontal="center" borderTop="neutral-alpha-medium">
       <Row gap="12" textVariant="label-default-m" maxWidth={layout.footer.width} vertical="center">
-        <Logo dark href="/" icon="/trademarks/icon-dark.svg" size="m" />
-        <Logo light href="/" icon="/trademarks/icon-light.svg" size="m" />
+        <Logo dark href={localePath(lang)} icon="/trademarks/icon-dark.svg" size="m" />
+        <Logo light href={localePath(lang)} icon="/trademarks/icon-light.svg" size="m" />
         {/* L'utilisation de ce modèle nécessite une attribution. Ne supprimez pas le lien vers Once UI sauf si vous avez un abonnement Once UI Pro. */}
         <Button
           data-border="rounded"
@@ -24,7 +26,7 @@ export const Footer = () => {
           href="https://once-ui.com/products/magic-docs"
         >
           <Row gap="12" vertical="center">
-            Lancez votre documentation avec Once UI
+            {d.footerOnceUi}
             <Icon size="xs" name="arrowUpRight" onBackground="brand-medium" />
           </Row>
         </Button>
@@ -32,7 +34,7 @@ export const Footer = () => {
       <Row maxWidth={layout.footer.width} horizontal="between" gap="40" wrap paddingX="2">
         <Column gap="12" textVariant="label-default-m">
           <Row paddingX="2" marginBottom="8">
-            Produits
+            {d.products}
           </Row>
           <Row>
             <SmartLink href="https://once-ui.com/products/once-ui-core">Once UI</SmartLink>
@@ -52,24 +54,24 @@ export const Footer = () => {
         </Column>
         <Column gap="12" textVariant="label-default-m">
           <Row paddingX="2" marginBottom="8">
-            Ressources
+            {d.resources}
           </Row>
           <Row>
-            <SmartLink href="https://once-ui.com/about">À propos</SmartLink>
+            <SmartLink href="https://once-ui.com/about">{d.about}</SmartLink>
           </Row>
           <Row>
-            <SmartLink href="https://once-ui.com/terms-of-use">Conditions d&apos;utilisation</SmartLink>
+            <SmartLink href="https://once-ui.com/terms-of-use">{d.terms}</SmartLink>
           </Row>
           <Row>
-            <SmartLink href="https://once-ui.com/privacy-policy">Politique de confidentialité</SmartLink>
+            <SmartLink href="https://once-ui.com/privacy-policy">{d.privacy}</SmartLink>
           </Row>
           <Row>
-            <SmartLink href="https://once-ui.com/license-agreement">Contrat de licence</SmartLink>
+            <SmartLink href="https://once-ui.com/license-agreement">{d.license}</SmartLink>
           </Row>
         </Column>
         <Column data-border="rounded" gap="12" textVariant="label-default-m">
           <Row paddingX="2" marginBottom="8">
-            Réseaux sociaux
+            {d.social}
           </Row>
           {social.map((link, index) => (
             <Button key={index} href={link.link} weight="default" prefixIcon={link.icon} label={link.name} size="s" variant="secondary" />

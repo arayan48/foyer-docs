@@ -1,0 +1,35 @@
+---
+title: "Variables de entorno"
+updatedAt: "2026-11-22"
+summary: "Cambiar la carpeta de datos o la dirección de escucha del agente."
+navLabel: "Variables"
+navIcon: "config"
+---
+
+| Variable | Por defecto | Función |
+|---|---|---|
+| `FOYER_DATA` | `C:\Foyer` o `/var/lib/foyer` | Carpeta de datos: token, certificado, servidores |
+| `FOYER_ADDR` | `0.0.0.0:7878` | Dirección y puerto de escucha del agente |
+
+## Ejemplo en Linux
+
+Para poner los datos en otro disco, edite el servicio:
+
+```bash
+sudo systemctl edit foyer
+```
+
+Añada:
+
+```ini
+[Service]
+Environment=FOYER_DATA=/mnt/juegos/foyer
+```
+
+Después reinicie:
+
+```bash
+sudo systemctl restart foyer
+```
+
+Una carpeta de datos nueva crea un token y un certificado nuevos. La aplicación pedirá validar la nueva huella.

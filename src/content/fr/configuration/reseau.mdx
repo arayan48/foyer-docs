@@ -1,0 +1,54 @@
+---
+title: "Réseau et ports"
+updatedAt: "2026-11-22"
+summary: "Ports utilisés, pare-feu, box internet et accès depuis l'extérieur."
+navLabel: "Réseau et ports"
+navIcon: "globe"
+---
+
+## Ports utilisés
+
+| Service | Port par défaut | Protocole | À ouvrir sur Internet ? |
+|---|---|---|---|
+| Agent Foyer | `7878` | TCP | **Non, jamais** |
+| Minecraft | `25565` | TCP | Oui, pour les joueurs |
+| FiveM | `30120` | TCP et UDP | Oui, pour les joueurs |
+| txAdmin (FiveM) | port FiveM + 10000, soit `40120` | TCP | Non, sauf besoin |
+
+## Pare-feu de la machine
+
+- **Windows** : l'agent ouvre et ferme les ports des jeux, mais **pour le réseau local seulement**.
+- **Linux** : l'agent ne touche pas au pare-feu. Ouvrez les ports à la main.
+
+Pour accepter des joueurs d'Internet sous Windows, ajoutez une règle dans PowerShell administrateur. Exemple pour Minecraft :
+
+```powershell
+New-NetFirewallRule -DisplayName "Minecraft 25565" -Direction Inbound -Protocol TCP -LocalPort 25565 -Action Allow
+```
+
+Sous Linux, avec `ufw` :
+
+```bash
+sudo ufw allow 25565/tcp
+```
+
+Pour FiveM, ouvrez `30120` en TCP **et** en UDP.
+
+## Faire venir des joueurs de l'extérieur
+
+1. Donnez une IP fixe à la machine dans votre box (bail DHCP statique).
+2. Ouvrez le port dans le pare-feu de la machine, comme ci-dessus.
+3. Dans la box, redirigez le port du jeu vers cette IP (NAT / redirection de ports).
+4. Donnez aux joueurs votre IP publique, ou un nom de domaine.
+
+Si votre box est derrière un CGNAT ou si vous ne voulez rien ouvrir, utilisez un tunnel comme [playit.gg](https://playit.gg).
+
+## Gérer à distance
+
+**N'exposez jamais le port `7878` sur Internet.** Pour gérer vos serveurs hors de chez vous, passez par un VPN : WireGuard, Tailscale, ou le VPN de votre box.
+
+## Sécurité de la connexion
+
+- Tout le trafic entre l'appli et l'agent est chiffré (TLS).
+- L'appli épingle le certificat de l'agent : un certificat différent est refusé.
+- Chaque requête, console comprise, exige le jeton dans l'en-tête `Authorization`.

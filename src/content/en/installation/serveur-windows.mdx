@@ -1,0 +1,44 @@
+---
+title: "Windows server"
+updatedAt: "2026-11-22"
+summary: "Install the Foyer agent on the Windows machine that hosts the games."
+navLabel: "Windows server"
+navIcon: "server"
+---
+
+`Foyer-Serveur.exe` installs the app and the agent on the machine that will run the games.
+
+## Install
+
+1. Download `Foyer-Serveur.exe` from the [latest release](https://github.com/arayan48/foyer/releases/latest).
+2. Run it and accept the administrator prompt.
+3. Complete the wizard.
+
+The installer:
+
+- creates a scheduled task that starts the agent when Windows boots, even with no one signed in;
+- opens port `7878` (TCP) in the Windows firewall, for the local network only;
+- creates the `C:\Foyer` data folder.
+
+## Files created
+
+| File | Purpose |
+|---|---|
+| `C:\Foyer\token` | Token to enter in the app |
+| `C:\Foyer\fingerprint` | Certificate fingerprint, to compare when connecting |
+| `C:\Foyer\cert.pem`, `key.pem` | The agent's HTTPS certificate |
+| `C:\Foyer\servers.json` | List of servers |
+| `C:\Foyer\servers\<id>\` | Files of each server (world, plugins, resources) |
+| `C:\Foyer\runtime\` | Java shared by the Minecraft servers |
+
+To read the token:
+
+```powershell
+Get-Content C:\Foyer\token
+```
+
+## Supported systems
+
+Windows 10, Windows 11 and Windows Server, 64-bit. Foyer is tested on Windows Server 2025.
+
+For a dedicated machine, Windows Server and Windows 11 Pro both work. Disable sleep mode: a sleeping server disconnects its players.

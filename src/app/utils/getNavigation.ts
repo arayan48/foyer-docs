@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 import { Schemes } from '@once-ui-system/core';
+import type { Locale } from '@/i18n';
 
 interface NavigationItem {
     slug: string;
@@ -54,7 +55,7 @@ function sortItems(items: NavigationItem[]): NavigationItem[] {
   });
 }
 
-export default function getNavigation(dirPath = path.join(process.cwd(), 'src/content')): NavigationItem[] {
+export default function getNavigation(lang: Locale, dirPath = path.join(process.cwd(), 'src/content', lang)): NavigationItem[] {
   const entries = fs.readdirSync(dirPath, { withFileTypes: true });
   
   const dirMetaPath = path.join(dirPath, 'meta.json');
@@ -96,7 +97,7 @@ export default function getNavigation(dirPath = path.join(process.cwd(), 'src/co
       }
       
       // Obtenir les enfants et les trier avant de retourner
-      const children = getNavigation(fullPath);
+      const children = getNavigation(lang, fullPath);
 
       const item = {
         slug: entry.name,
@@ -121,7 +122,7 @@ export default function getNavigation(dirPath = path.join(process.cwd(), 'src/co
         pageOrder = dirMeta.pages[filenameNoExt];
       }
 
-      const contentDir = path.join(process.cwd(), 'src/content');
+      const contentDir = path.join(process.cwd(), 'src/content', lang);
       const relativePath = path.relative(contentDir, fullPath);
       const normalizedPath = relativePath.replace(/\\/g, '/').replace(/\.mdx?$/, '');
 

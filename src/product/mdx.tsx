@@ -1,5 +1,6 @@
 import { MDXRemote, MDXRemoteProps } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
+import { type Locale, localePath } from "@/i18n";
 import React, { ReactNode } from "react";
 
 import { 
@@ -204,10 +205,11 @@ const components = {
 };
 
 type CustomMDXProps = MDXRemoteProps & {
+  lang: Locale;
   components?: typeof components;
 };
 
-export function CustomMDX(props: CustomMDXProps) {
+export function CustomMDX({ lang, ...props }: CustomMDXProps) {
   // Ajouter un bloc try-catch pour gérer les erreurs lors du rendu MDX
   try {
     return (
@@ -216,6 +218,8 @@ export function CustomMDX(props: CustomMDXProps) {
         options={{ blockJS: false, mdxOptions: { remarkPlugins: [remarkGfm] } }}
         components={{
           ...components,
+          a: ({ href, ...rest }: CustomLinkProps) => <CustomLink href={href.startsWith("/") ? localePath(lang, href) : href} {...rest} />,
+          PageList: (p: React.ComponentProps<typeof PageList>) => <PageList {...p} lang={lang} />,
           ...(props.components || {})
         }}
       />

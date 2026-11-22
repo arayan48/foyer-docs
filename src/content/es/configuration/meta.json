@@ -1,0 +1,10 @@
+{
+  "title": "Configuración",
+  "pages": {
+    "prerequis": 1,
+    "reseau": 2,
+    "reglages-serveur": 3,
+    "variables": 4
+  },
+  "order": 2
+}

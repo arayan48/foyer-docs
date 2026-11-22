@@ -1,0 +1,42 @@
+---
+title: "Appli"
+updatedAt: "2026-11-22"
+summary: "Installer l'appli Foyer sur le PC depuis lequel vous gérez vos serveurs."
+navLabel: "Appli"
+navIcon: "download"
+---
+
+L'appli se connecte à un agent, sur la même machine ou sur le réseau. Elle ne demande pas de droits administrateur.
+
+## Télécharger
+
+Depuis la [dernière version](https://github.com/arayan48/foyer/releases/latest) :
+
+| Système | Fichier |
+|---|---|
+| Windows | `Foyer-Client.exe` |
+| macOS | `Foyer-Mac.dmg` |
+| Linux (Debian, Ubuntu) | `Foyer-Client-Linux.deb` |
+| Linux (autres) | `Foyer-Client-Linux.AppImage` |
+
+Sur la machine Windows qui héberge les jeux, inutile d'installer le client : `Foyer-Serveur.exe` contient déjà l'appli.
+
+## Linux
+
+```bash
+sudo apt install ./Foyer-Client-Linux.deb
+```
+
+Ou, avec l'AppImage :
+
+```bash
+chmod +x Foyer-Client-Linux.AppImage && ./Foyer-Client-Linux.AppImage
+```
+
+## Mises à jour
+
+L'appli cherche une nouvelle version au lancement puis toutes les 6 heures. Une fois le téléchargement fini, cliquez sur **Redémarrer**.
+
+- `Foyer-Serveur.exe` met à jour l'appli et l'agent. Les serveurs de jeu sont arrêtés proprement avant.
+- `Foyer-Client.exe` ne met à jour que l'appli, pas l'agent distant.
+- L'agent Linux se met à jour en relançant [son script d'installation](/installation/serveur-linux).

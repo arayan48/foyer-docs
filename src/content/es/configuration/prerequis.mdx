@@ -1,0 +1,39 @@
+---
+title: "Requisitos mínimos"
+updatedAt: "2026-11-22"
+summary: "La máquina necesaria para Foyer y sus servidores de juego."
+navLabel: "Requisitos mínimos"
+navIcon: "cpu"
+---
+
+El agente de Foyer es ligero. Son los juegos los que necesitan recursos. Sume entonces:
+
+**RAM de la máquina = sistema + suma de la RAM de los servidores + margen**
+
+## Base de la máquina
+
+| | Mínimo | Recomendado |
+|---|---|---|
+| Procesador | 2 núcleos, 64 bits | 4 núcleos o más, frecuencia alta (4 GHz o más en boost) |
+| RAM reservada al sistema | 2 GB (Linux), 3 GB (Windows) | 4 GB |
+| Disco | SSD, 20 GB libres | SSD NVMe, 50 GB libres o más |
+| Red | Cable Ethernet | Cable Ethernet y fibra |
+
+## Lo que de verdad importa
+
+- **La frecuencia del procesador antes que el número de núcleos.** Minecraft y FiveM hacen casi todo su trabajo en un solo hilo. Un procesador reciente a 4,5 GHz aguanta más jugadores que un antiguo 16 núcleos a 2,4 GHz. Los núcleos adicionales sirven para ejecutar varios servidores a la vez.
+- **Un SSD.** En un disco duro, la carga de chunks de Minecraft y el arranque de FiveM son mucho más lentos.
+- **Cable en lugar de Wi-Fi.** El Wi-Fi añade latencia y pérdida de paquetes.
+- **No demasiada RAM por servidor.** Por encima de lo necesario, la RAM sobrante no aporta nada y puede alargar las pausas del recolector de basura de Java.
+
+## Ejemplos de máquinas
+
+Órdenes de magnitud estimados, no mediciones. Pruebe con sus plugins y sus scripts.
+
+| Máquina | Lo que aguanta bien |
+|---|---|
+| Mini PC, 4 núcleos, 8 GB | Un servidor Minecraft de 10 a 15 jugadores, o un FiveM ligero de 10 jugadores |
+| PC de sobremesa, 6 núcleos, 16 GB | Dos servidores Minecraft de 15 jugadores, o un FiveM RP de 32 jugadores |
+| Servidor, 8 núcleos, 32 GB | Varios servidores Minecraft, o un FiveM RP de 48 jugadores con su base de datos |
+
+Los detalles por juego están en [Minecraft](/serveurs/minecraft) y [FiveM](/serveurs/fivem).

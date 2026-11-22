@@ -1,0 +1,54 @@
+---
+title: "Red y puertos"
+updatedAt: "2026-11-22"
+summary: "Puertos usados, firewall, router y acceso desde el exterior."
+navLabel: "Red y puertos"
+navIcon: "globe"
+---
+
+## Puertos usados
+
+| Servicio | Puerto predeterminado | Protocolo | ¿Abrir a Internet? |
+|---|---|---|---|
+| Agente Foyer | `7878` | TCP | **No, nunca** |
+| Minecraft | `25565` | TCP | Sí, para los jugadores |
+| FiveM | `30120` | TCP y UDP | Sí, para los jugadores |
+| txAdmin (FiveM) | puerto FiveM + 10000, es decir `40120` | TCP | No, salvo necesidad |
+
+## Firewall de la máquina
+
+- **Windows**: el agente abre y cierra los puertos de los juegos, pero **solo para la red local**.
+- **Linux**: el agente no toca el firewall. Abra los puertos a mano.
+
+Para aceptar jugadores de Internet en Windows, añada una regla en PowerShell como administrador. Ejemplo para Minecraft:
+
+```powershell
+New-NetFirewallRule -DisplayName "Minecraft 25565" -Direction Inbound -Protocol TCP -LocalPort 25565 -Action Allow
+```
+
+En Linux, con `ufw`:
+
+```bash
+sudo ufw allow 25565/tcp
+```
+
+Para FiveM, abra `30120` en TCP **y** en UDP.
+
+## Recibir jugadores del exterior
+
+1. Asigne una IP fija a la máquina en su router (concesión DHCP estática).
+2. Abra el puerto en el firewall de la máquina, como se indica arriba.
+3. En el router, redirija el puerto del juego a esa IP (NAT / redirección de puertos).
+4. Dé a los jugadores su IP pública o un nombre de dominio.
+
+Si su conexión está detrás de un CGNAT o no quiere abrir nada, use un túnel como [playit.gg](https://playit.gg).
+
+## Gestionar a distancia
+
+**No exponga nunca el puerto `7878` a Internet.** Para gestionar sus servidores fuera de casa, use una VPN: WireGuard, Tailscale o la VPN de su router.
+
+## Seguridad de la conexión
+
+- Todo el tráfico entre la aplicación y el agente está cifrado (TLS).
+- La aplicación fija el certificado del agente: se rechaza cualquier otro certificado.
+- Cada petición, incluida la consola, exige el token en la cabecera `Authorization`.

@@ -1,14 +1,12 @@
 "use client";
 
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useMemo } from "react";
 import { Schemes, Accordion, Column, Flex, Icon, Row, Tag, ToggleButton } from "@once-ui-system/core";
 import { usePathname } from 'next/navigation';
+import { type Locale, localePath, stripLocale, t } from "@/i18n";
 import { routes, layout } from "@/resources";
 
 import styles from './Sidebar.module.scss';
-
-// Cache global de navigation pour éviter les rechargements inutiles
-let globalNavigationCache: any = null;
 
 export interface NavigationItem extends Omit<React.ComponentProps<typeof Flex>, "title" | "label" | "children">{
   slug: string;
@@ -25,16 +23,18 @@ export interface NavigationItem extends Omit<React.ComponentProps<typeof Flex>, 
 }
 
 interface SidebarProps extends Omit<React.ComponentProps<typeof Flex>, "children"> {
-  initialNavigation?: NavigationItem[];
+  lang: Locale;
+  navigation: NavigationItem[];
 }
 
 // Composant d'élément de navigation mémoïsé pour éviter les re-rendus
 const NavigationItemComponent: React.FC<{
+  lang: Locale;
   item: NavigationItem;
   depth: number;
   pathname: string;
   renderNavigation: (items: NavigationItem[], depth: number) => React.ReactNode;
-}> = ({ item, depth, pathname, renderNavigation }) => {
+}> = ({ lang, item, depth, pathname, renderNavigation }) => {
   const correctedSlug = item.slug;
   
   // Extraire les segments de chemin pour une meilleure correspondance
@@ -150,7 +150,7 @@ const NavigationItemComponent: React.FC<{
       horizontal="between"
       selected={isSelected}
       className={depth === 0 ? styles.navigation : undefined}
-      href={`/${correctedSlug}`}>
+      href={localePath(lang, correctedSlug)}>
       <Row fillWidth horizontal="between" vertical="center">
         <Row
           overflow="hidden"
@@ -191,7 +191,7 @@ const ResourceLinkComponent: React.FC<{
   label: string;
   pathname: string;
 }> = ({ href, icon, label, pathname }) => {
-  const isSelected = pathname === href;
+  const isSelected = pathname === stripLocale(href);
   
   return (
     <ToggleButton
@@ -226,9 +226,10 @@ ResourceLink.displayName = 'ResourceLink';
 
 // Créer une version stable de la barre latérale qui ne se re-rend pas inutilement
 const SidebarContent: React.FC<{
+  lang: Locale;
   navigation: NavigationItem[];
   pathname: string;
-}> = React.memo(({ navigation, pathname }) => {
+}> = React.memo(({ lang, navigation, pathname }) => {
   // Créer une fonction de rendu qui capture le chemin courant
   const renderNavigation = (items: NavigationItem[], depth = 0) => {
     return (
@@ -236,6 +237,7 @@ const SidebarContent: React.FC<{
         {items.map((item) => (
           <NavigationItem 
             key={item.slug}
+            lang={lang}
             item={item}
             depth={depth}
             pathname={pathname}
@@ -250,20 +252,20 @@ const SidebarContent: React.FC<{
   const resourcesSection = (!(routes['/roadmap'] || routes['/changelog'])) ? null : (
     <Column gap="2" marginTop="32" paddingLeft="4">
       <Row textVariant="label-strong-s" onBackground="brand-strong" paddingLeft="8" paddingY="12">
-        Ressources
+        {t(lang).resources}
       </Row>
       {routes['/roadmap'] && (
         <ResourceLink
-          href="/roadmap"
+          href={localePath(lang, "/roadmap")}
           icon="roadmap"
-          label="Feuille de route"
+          label={t(lang).roadmap}
           pathname={pathname}
         />
       )}
 
       {routes['/changelog'] && (
         <ResourceLink
-          href="/changelog"
+          href={localePath(lang, "/changelog")}
           icon="changelog"
           label="Changelog"
           pathname={pathname}
@@ -290,43 +292,8 @@ const SidebarContent: React.FC<{
 
 SidebarContent.displayName = 'SidebarContent';
 
-const Sidebar: React.FC<SidebarProps> = ({ initialNavigation, ...rest }) => {
-  const [navigation, setNavigation] = useState<NavigationItem[]>(initialNavigation || []);
-  const [hasLoaded, setHasLoaded] = useState(false);
-  const pathname = usePathname();
-  
-  // Charger les données de navigation une seule fois, en utilisant le cache global
-  useEffect(() => {
-    // Utiliser initialNavigation si fourni
-    if (initialNavigation && initialNavigation.length > 0) {
-      setNavigation(initialNavigation);
-      globalNavigationCache = initialNavigation;
-      setHasLoaded(true);
-      return;
-    }
-
-    // Utiliser le cache global si disponible
-    if (globalNavigationCache) {
-      setNavigation(globalNavigationCache);
-      setHasLoaded(true);
-      return;
-    }
-
-    // Charger seulement si pas encore chargé et pas de cache global
-    if (!hasLoaded) {
-      fetch("/api/navigation")
-        .then((res) => res.json())
-        .then((data) => {
-          setNavigation(data);
-          globalNavigationCache = data; // Mettre en cache globalement
-          setHasLoaded(true);
-        })
-        .catch((err) => {
-          console.error("Échec du chargement de la navigation", err);
-          setHasLoaded(true);
-        });
-    }
-  }, [initialNavigation, hasLoaded]);
+const Sidebar: React.FC<SidebarProps> = ({ lang, navigation, ...rest }) => {
+  const pathname = stripLocale(usePathname());
 
   // Créer un conteneur stable qui ne change pas
   const containerStyle = useMemo(() => ({
@@ -348,16 +315,16 @@ const Sidebar: React.FC<SidebarProps> = ({ initialNavigation, ...rest }) => {
       style={containerStyle} 
       {...rest}
     >
-      {hasLoaded && <SidebarContent key={pathname} navigation={navigation} pathname={pathname} />}
+      <SidebarContent key={pathname} lang={lang} navigation={navigation} pathname={pathname} />
     </Column>
   );
 };
 
 // Utiliser une fonction de comparaison personnalisée pour le composant Sidebar entier
 const MemoizedSidebar = React.memo(Sidebar, (prevProps, nextProps) => {
-  // Ne re-rendre que si initialNavigation change
+  // Ne re-rendre que si la navigation change
   // Le composant se re-rendra quand le chemin change via le hook usePathname en interne
-  return prevProps.initialNavigation === nextProps.initialNavigation;
+  return prevProps.navigation === nextProps.navigation;
 });
 
 MemoizedSidebar.displayName = 'MemoizedSidebar';

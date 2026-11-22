@@ -1,0 +1,30 @@
+---
+title: "Introduction"
+updatedAt: "2026-11-22"
+summary: "Foyer turns a Windows or Linux machine into a game server host, with no config files and no command line."
+navLabel: "Introduction"
+navIcon: "rocket"
+---
+
+Foyer installs, runs and monitors your game servers from a desktop app. It currently handles **Minecraft (Paper)** and **FiveM (txAdmin)**. The app interface is in French for now.
+
+## How it works
+
+Foyer is made of two programs:
+
+- **The agent** runs on the machine that hosts the games. It downloads the servers, starts them, restarts them after a crash and, on Windows, opens their ports on the local network. It listens on port `7878` over HTTPS.
+- **The app** connects to an agent with an address and a token. It shows the dashboard, live consoles and the settings of each server.
+
+Both can run on the same machine, or the app on your PC and the agent on a server on your local network.
+
+## Where to start
+
+1. Check that your machine is suitable: [Minimum requirements](/configuration/prerequis).
+2. Install the agent: [Windows](/installation/serveur-windows) or [Linux](/installation/serveur-linux).
+3. Install the app on your PC: [App](/installation/client).
+4. Connect: [First connection](/installation/premiere-connexion).
+5. Choose the RAM for your servers: [Minecraft](/serveurs/minecraft), [FiveM](/serveurs/fivem).
+
+<Grid fillWidth gap="8" columns="2" s={{columns: 1}} marginTop="20">
+  <PageList path={["installation"]} padding="16"/>
+</Grid>

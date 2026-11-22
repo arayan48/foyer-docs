@@ -1,0 +1,60 @@
+---
+title: "Minecraft"
+updatedAt: "2026-11-22"
+summary: "Paper server: RAM and processor by player count, and the settings that matter."
+navLabel: "Minecraft"
+navIcon: "components"
+---
+
+Foyer installs **Paper**, an optimised version of the official Minecraft server, compatible with Bukkit and Spigot plugins. The right Java version is downloaded automatically (Java 17 from 1.17 to 1.20.4, Java 21 from 1.20.5 to 1.21, Java 25 from 26 onwards).
+
+## How many players?
+
+For a survival Paper server, view distance 10, with a few common plugins:
+
+| Simultaneous players | Server RAM | Cores | Profile |
+|---|---|---|---|
+| 1 to 5 | 2 to 3 GB | 2 | Friends, few plugins |
+| 5 to 15 | 4 GB | 2 to 4 | Small community, light plugins |
+| 15 to 30 | 6 GB | 4 | Active community, 20 to 40 plugins |
+| 30 to 60 | 8 to 10 GB | 4, high clock speed | Public server, mini-games |
+| 60 and up | 10 to 12 GB | 4 and up | Plan several servers linked by a proxy |
+
+These figures are estimates for a server among friends or a small community, not measurements. Hosting companies often advise more: [WinterNode](https://winternode.com/blog/minecraft/how-much-ram-minecraft-server) recommends 6 to 8 GB for a small server with plugins. If your machine has room, use their figure.
+
+**Example: 2 cores and 4 GB of RAM for the server.** Aim for about ten players, with a view distance of 8. If the whole machine only has 4 GB, give the server 2 GB and aim for 5 players. Automatic farms and heavily explored worlds lower this number.
+
+Beyond 12 GB, adding RAM no longer helps: the processor is the limit. A Minecraft server runs the world on a single main thread, so clock speed matters more than core count.
+
+## What uses resources
+
+- **Players exploring.** Generating new chunks is expensive. Pre-generate the world with the Chunky plugin before opening.
+- **Entities.** Mob farms, villager farms, items on the ground.
+- **Redstone and hoppers.** A large hopper factory can make TPS drop.
+- **Some plugins.** A badly written plugin costs more than ten players.
+
+## Settings to know
+
+In the app's Propriétés (Properties) tab (`server.properties`):
+
+| Key | Advice |
+|---|---|
+| `view-distance` | 8 to 10. Each extra step greatly increases the load. |
+| `simulation-distance` | 6 to 8. Distance at which mobs and crops are active. |
+| `max-players` | According to the table above. |
+| `online-mode` | `true` to verify Mojang accounts. |
+| `white-list` | `true` for a server among friends. |
+
+## Check that it holds
+
+In the console, type:
+
+```text
+tps
+```
+
+The server should show **20 TPS**. If it stays below 18, players feel slowdowns: lower the view distance or look for the cause with Paper's built-in profiler (`spark profiler`).
+
+## Ports
+
+TCP `25565` by default. For several servers, use `25566`, `25567`, and so on.

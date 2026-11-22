@@ -1,0 +1,58 @@
+---
+title: "FiveM"
+updatedAt: "2026-11-22"
+summary: "FiveM server: licence key, player limits, RAM and processor by type of server."
+navLabel: "FiveM"
+navIcon: "components"
+---
+
+Foyer installs the **recommended** version of the FiveM server (FXServer), with or without txAdmin. Without txAdmin, you can start from an empty server or from the **ESX** or **QBCore** frameworks, with a MariaDB database ready.
+
+## Before you start
+
+- **A licence key**, free, to create on the [Cfx.re portal](https://portal.cfx.re) with your Cfx.re account.
+- **A legitimate copy of GTA V** for the players.
+
+## Player limit
+
+The number of slots depends on Cfx.re, not on the machine. By default, a server accepts **48 players** with OneSync Infinity. An Element Club subscription goes further, up to 2048 slots depending on the plan. Current tiers are on the [official page](https://fivem.net/server-hosting).
+
+Foyer turns OneSync on for servers created without txAdmin.
+
+## How many players?
+
+FiveM mostly depends on the number and quality of the scripts. With the same number of players, a loaded RP server needs far more than an empty one.
+
+| Players | Profile | Cores | Server RAM |
+|---|---|---|---|
+| 1 to 20 | Empty server or few scripts | 2 to 4 | 4 to 8 GB |
+| 20 to 32 | Some scripts (jobs, garages) | 4 to 6 | 8 to 12 GB |
+| 32 to 48 | Standard ESX or QBCore RP | 6 to 8 | 12 to 16 GB |
+| 48 to 64 | Large RP (phone, inventory, MDT) | 8, high clock speed | 16 to 24 GB |
+
+Figures adapted from the guides of two hosting companies, [ElypseCloud](https://wiki.elypsecloud.com/en/fivem/ram-cpu-players/) and [Flux](https://runonflux.com/games/fivem/fivem-server-requirements). They are estimates, not measurements.
+
+Add **1 to 2 GB** for the MariaDB database, which Foyer installs with txAdmin, ESX or QBCore.
+
+**Example: 2 cores and 4 GB.** Enough for a test server or about ten players without a framework. Not enough for ESX or QBCore RP: aim for at least 4 cores and 8 GB.
+
+## What uses resources
+
+- **Scripts running in loops.** Spot them with the in-game `resmon` command or the txAdmin monitor.
+- **Added vehicles and maps.** They weigh on the disk, player downloads and memory.
+- **The database.** Badly indexed queries slow down the whole server.
+
+## Ports
+
+| Service | Port | Protocol |
+|---|---|---|
+| Game | `30120` | TCP and UDP |
+| txAdmin | `40120` | TCP |
+
+Only the game port needs to be open to players. Keep txAdmin local or behind a VPN.
+
+## First launch with txAdmin
+
+1. Start the server from Foyer.
+2. Open txAdmin from the app: a PIN code appears in the console.
+3. Link your Cfx.re account, then follow the txAdmin wizard and paste your licence key.

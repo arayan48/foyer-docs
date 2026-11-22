@@ -1,0 +1,42 @@
+---
+title: "App"
+updatedAt: "2026-11-22"
+summary: "Install the Foyer app on the PC you manage your servers from."
+navLabel: "App"
+navIcon: "download"
+---
+
+The app connects to an agent, on the same machine or over the network. It does not need administrator rights.
+
+## Download
+
+From the [latest release](https://github.com/arayan48/foyer/releases/latest):
+
+| System | File |
+|---|---|
+| Windows | `Foyer-Client.exe` |
+| macOS | `Foyer-Mac.dmg` |
+| Linux (Debian, Ubuntu) | `Foyer-Client-Linux.deb` |
+| Linux (others) | `Foyer-Client-Linux.AppImage` |
+
+On the Windows machine that hosts the games, you do not need the client: `Foyer-Serveur.exe` already includes the app.
+
+## Linux
+
+```bash
+sudo apt install ./Foyer-Client-Linux.deb
+```
+
+Or, with the AppImage:
+
+```bash
+chmod +x Foyer-Client-Linux.AppImage && ./Foyer-Client-Linux.AppImage
+```
+
+## Updates
+
+The app looks for a new version at launch, then every 6 hours. Once the download is done, click **Redémarrer** (Restart).
+
+- `Foyer-Serveur.exe` updates the app and the agent. Game servers are stopped cleanly first.
+- `Foyer-Client.exe` only updates the app, not the remote agent.
+- The Linux agent is updated by running [its install script](/installation/serveur-linux) again.

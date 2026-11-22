@@ -1,13 +1,20 @@
-/* Charte Foyer 1.0 : accent terracotta */
-:root {
-  --brand-solid-strong: #c67139;
-  --brand-solid-medium: #d27f47;
-  --brand-on-solid-strong: #201e1d;
-}
-[data-theme="light"] {
-  --brand-solid-strong: #b05f2b;
-  --brand-solid-medium: #9d5324;
-  --brand-on-solid-strong: #fffaf2;
+/* Charte Foyer 1.0 : la palette orange de la bibliothèque devient terracotta */
+html:root {
+  --scheme-orange-100: #140b06;
+  --scheme-orange-200: #2a180d;
+  --scheme-orange-300: #6b3917;
+  --scheme-orange-400: #9d5324;
+  --scheme-orange-500: #b05f2b;
+  --scheme-orange-600: #c67139;
+  --scheme-orange-700: #d9935f;
+  --scheme-orange-800: #ebc0a0;
+  --scheme-orange-900: #f2d5c0;
+  --scheme-orange-1000: #f7e6d9;
+  --scheme-orange-1100: #faf0e7;
+  --scheme-orange-1200: #fdf9f5;
+  --scheme-orange-600-15: #c6713926;
+  --scheme-orange-600-30: #c671394d;
+  --scheme-orange-600-50: #c6713980;
 }
 [data-theme="dark"] { --page-background: #201e1d; }
 [data-theme="light"] { --page-background: #f7f1e7; }
@@ -17,5 +24,13 @@ article table, main table { width: 100%; border-collapse: collapse; margin: 8px 
 main th, main td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--neutral-alpha-medium); vertical-align: top; }
 main th { font-weight: 600; color: var(--neutral-on-background-strong); }
 main td { color: var(--neutral-on-background-medium); }
-main .mdx-table { overflow-x: auto; }
 @media (max-width: 640px) { main table { display: block; overflow-x: auto; white-space: nowrap; } }
+
+/* Choix de la langue */
+.lang-switch { display: flex; gap: 2px; }
+.lang-switch a { padding: 6px 8px; border-radius: 8px; font-size: 0.8rem; font-weight: 600; text-decoration: none; color: var(--neutral-on-background-weak); }
+.lang-switch a:hover { color: var(--neutral-on-background-strong); background: var(--neutral-alpha-weak); }
+.lang-switch a:focus-visible { outline: 2px solid var(--scheme-orange-600); outline-offset: 2px; }
+.lang-switch a[aria-current] { color: var(--brand-on-background-medium); }
+
+@media (max-width: 768px) { .page-content { padding-inline: 16px; } }

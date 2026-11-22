@@ -1,0 +1,54 @@
+---
+title: "Network and ports"
+updatedAt: "2026-11-22"
+summary: "Ports used, firewall, internet router and access from outside."
+navLabel: "Network and ports"
+navIcon: "globe"
+---
+
+## Ports used
+
+| Service | Default port | Protocol | Open to the Internet? |
+|---|---|---|---|
+| Foyer agent | `7878` | TCP | **No, never** |
+| Minecraft | `25565` | TCP | Yes, for players |
+| FiveM | `30120` | TCP and UDP | Yes, for players |
+| txAdmin (FiveM) | FiveM port + 10000, so `40120` | TCP | No, unless needed |
+
+## Machine firewall
+
+- **Windows**: the agent opens and closes the game ports, but **for the local network only**.
+- **Linux**: the agent does not touch the firewall. Open the ports by hand.
+
+To accept players from the Internet on Windows, add a rule in an administrator PowerShell. Example for Minecraft:
+
+```powershell
+New-NetFirewallRule -DisplayName "Minecraft 25565" -Direction Inbound -Protocol TCP -LocalPort 25565 -Action Allow
+```
+
+On Linux, with `ufw`:
+
+```bash
+sudo ufw allow 25565/tcp
+```
+
+For FiveM, open `30120` in TCP **and** UDP.
+
+## Let players in from outside
+
+1. Give the machine a fixed IP in your router (static DHCP lease).
+2. Open the port in the machine firewall, as above.
+3. In the router, forward the game port to that IP (NAT / port forwarding).
+4. Give players your public IP, or a domain name.
+
+If your connection is behind CGNAT or you do not want to open anything, use a tunnel such as [playit.gg](https://playit.gg).
+
+## Manage remotely
+
+**Never expose port `7878` to the Internet.** To manage your servers away from home, use a VPN: WireGuard, Tailscale, or your router's VPN.
+
+## Connection security
+
+- All traffic between the app and the agent is encrypted (TLS).
+- The app pins the agent's certificate: a different certificate is refused.
+- Every request, console included, requires the token in the `Authorization` header.

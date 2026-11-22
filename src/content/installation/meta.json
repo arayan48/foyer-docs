@@ -1,9 +1,0 @@
-{
-  "title": "Installation",
-  "pages": {
-    "serveur-windows": 1,
-    "serveur-linux": 2,
-    "client": 3,
-    "premiere-connexion": 4
-  }
-}

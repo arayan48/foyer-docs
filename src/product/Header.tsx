@@ -4,9 +4,12 @@ import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { Button, Flex, Logo, NavIcon, Row, Kbar, useTheme, Animation } from "@once-ui-system/core";
 import { layout, routes } from "@/resources/once-ui.config";
+import { type Locale, localePath, t } from "@/i18n";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 import { Sidebar, NavigationItem } from "./Sidebar";
 
-export function Header() {
+export function Header({ lang, navigation }: { lang: Locale; navigation: NavigationItem[] }) {
+  const d = t(lang);
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const [isMac, setIsMac] = useState(false);
   const pathname = usePathname();
@@ -22,17 +25,6 @@ export function Header() {
   const toggleSidebar = () => {
     setSidebarVisible(!sidebarVisible);
   };
-
-  const [navigationItems, setNavigationItems] = useState<NavigationItem[]>([]);
-  
-  useEffect(() => {
-    fetch("/api/navigation")
-      .then((res) => res.json())
-      .then((data) => {
-        setNavigationItems(data);
-      })
-      .catch((err) => console.error("Échec du chargement de la navigation", err));
-  }, []);
 
   // Fonction pour convertir les éléments de navigation en éléments Kbar récursivement
   const convertToKbarItems = (items: NavigationItem[]) => {
@@ -59,7 +51,7 @@ export function Header() {
           section: "Documentation",  // section de recherche
           shortcut: [],
           keywords: keywords,
-          href: `/${correctedSlug}`,
+          href: localePath(lang, correctedSlug),
           icon: item.navIcon || "document",
         });
       }
@@ -68,17 +60,17 @@ export function Header() {
     return kbarItems;
   };
 
-  const docsItems = convertToKbarItems(navigationItems);
+  const docsItems = convertToKbarItems(navigation);
   const { theme, setTheme } = useTheme();
 
   const navigationKbarItems = [
     {
       id: "home",
-      name: "Accueil",
+      name: d.home,
       section: "Navigation",
       shortcut: [],
-      keywords: "accueil, page d'accueil",
-      href: "/",
+      keywords: d.homeKeywords,
+      href: localePath(lang),
       icon: "home",
     }
   ];
@@ -90,7 +82,7 @@ export function Header() {
       section: "Navigation",
       shortcut: [],
       keywords: "changelog, page changelog",
-      href: "/changelog",
+      href: localePath(lang, "/changelog"),
       icon: "changelog",
     });
   }
@@ -98,11 +90,11 @@ export function Header() {
   if (routes['/roadmap']) {
     navigationKbarItems.push({
       id: "roadmap",
-      name: "Feuille de route",
+      name: d.roadmap,
       section: "Navigation",
       shortcut: [],
       keywords: "feuille de route, roadmap",
-      href: "/roadmap",
+      href: localePath(lang, "/roadmap"),
       icon: "roadmap",
     });
   }
@@ -112,10 +104,10 @@ export function Header() {
     ...docsItems,
     {
       id: "theme-toggle",
-      name: theme === 'dark' ? "Mode clair" : "Mode sombre",
-      section: "Thème",
+      name: theme === 'dark' ? d.lightMode : d.darkMode,
+      section: d.themeSection,
       shortcut: [],
-      keywords: "mode clair, mode sombre, thème, basculer, apparence",
+      keywords: d.themeKeywords,
       perform: () => {
         setTheme(theme === 'dark' ? 'light' : 'dark');
       },
@@ -174,6 +166,8 @@ export function Header() {
                 borderRight="neutral-alpha-medium"
                 zIndex={9}>
                 <Sidebar
+                  lang={lang}
+                  navigation={navigation}
                   data-scaling="110"
                   fillWidth
                   width={undefined}
@@ -181,25 +175,26 @@ export function Header() {
                 />
               </Row>
             </Animation>
-            <Logo dark wordmark="/trademarks/type-dark.svg" size="s" href="/"/>
-            <Logo light wordmark="/trademarks/type-light.svg" size="s" href="/"/>
+            <Logo dark wordmark="/trademarks/type-dark.svg" size="s" href={localePath(lang)}/>
+            <Logo light wordmark="/trademarks/type-light.svg" size="s" href={localePath(lang)}/>
           </Row>
           <Kbar s={{hide: true}} items={kbar} radius="full" background="neutral-alpha-weak">
             <Button data-border="rounded" size="s" variant="tertiary" weight="default">
               <Row vertical="center" gap="16" style={{marginLeft: '-0.5rem'}} paddingRight="8">
                 <Row background="neutral-alpha-medium" paddingX="8" paddingY="4" radius="full" data-scaling="90" textVariant="body-default-xs" onBackground="neutral-medium">{isMac ? 'Cmd' : 'Ctrl'} k</Row>
-                Rechercher dans la doc...
+                {d.search}
               </Row>
             </Button>
           </Kbar>
-          <Row fillWidth horizontal="end" gap="8" data-border="rounded">
+          <Row fillWidth horizontal="end" vertical="center" gap="8" data-border="rounded">
+            <LanguageSwitcher lang={lang} />
             <Row s={{hide: true}}>
               <Button size="s" variant="secondary" href="https://foyer.cfd">
-                Site
+                {d.site}
               </Button>
             </Row>
             <Button href="https://github.com/arayan48/foyer/releases/latest" size="s">
-              Télécharger
+              {d.download}
             </Button>
           </Row>
         </Row>

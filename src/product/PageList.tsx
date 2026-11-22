@@ -1,8 +1,10 @@
-import { getPages, sortPages } from "@/app/utils/utils";
+import { type Locale, localePath } from "@/i18n";
+import { getPages, sectionTitle, sortPages } from "@/app/utils/utils";
 import { Card, Column, Icon, Row, Media, Text } from "@once-ui-system/core";
 import React from "react";
 
 interface props extends Omit<React.ComponentProps<typeof Card>, 'onClick'> {
+  lang: Locale;
   range?: [number] | [number, number];
   thumbnail?: boolean;
   path?: string[];
@@ -11,7 +13,7 @@ interface props extends Omit<React.ComponentProps<typeof Card>, 'onClick'> {
   depth?: number;
 }
 
-function formatSlug(slug: string): React.JSX.Element {
+function formatSlug(lang: Locale, slug: string): React.JSX.Element {
   // Découper le slug par '/'
   const parts = slug.split('/');
 
@@ -24,11 +26,7 @@ function formatSlug(slug: string): React.JSX.Element {
   }
 
   // Formater chaque partie pour capitaliser la première lettre de chaque mot
-  const formattedParts = pathParts.map(part =>
-    part.split('-')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ')
-  );
+  const formattedParts = pathParts.map((part) => sectionTitle(lang, part));
   
   return (
     <Row vertical="center" gap="4">
@@ -43,6 +41,7 @@ function formatSlug(slug: string): React.JSX.Element {
 }
 
 export function PageList({
+  lang,
   range,
   thumbnail = false,
   path = [],
@@ -51,14 +50,8 @@ export function PageList({
   description = true,
   ...rest
 }: props) {
-  // Créer un tableau de chemin de base commençant par src/content
-  const basePath = ["src", "content"];
-
-  // Combiner le chemin de base avec les segments de chemin supplémentaires
-  const fullPath = [...basePath, ...path];
-
   // Récupérer les pages depuis le chemin spécifié
-  let pages = getPages(fullPath);
+  let pages = getPages(lang, path);
 
   // Filtrer les pages par profondeur si spécifié
   if (depth !== undefined) {
@@ -87,7 +80,7 @@ export function PageList({
   return (
     <>
       {displayedPages.length > 0 && displayedPages.map((page) => (
-        <Card href={`/${page.slug}`} key={page.slug} radius="l" padding="2" gap="16" s={{direction: "column"}} border="neutral-alpha-weak" fillWidth {...rest}>
+        <Card href={localePath(lang, page.slug)} key={page.slug} radius="l" padding="2" gap="16" s={{direction: "column"}} border="neutral-alpha-weak" fillWidth {...rest}>
           {page.metadata.image && thumbnail && (
             <Media
               priority
@@ -96,13 +89,13 @@ export function PageList({
               cursor="interactive"
               radius="m"
               src={page.metadata.image}
-              alt={"Miniature de " + page.metadata.title}
+              alt={page.metadata.title}
               aspectRatio="16 / 9"
             />
           )}
           <Column fillWidth gap="4" vertical="center" paddingX="16" paddingY="12">
             <Text variant="label-default-s" onBackground="neutral-weak">
-              {formatSlug(page.slug)}
+              {formatSlug(lang, page.slug)}
             </Text>
             <Text variant="heading-strong-l" wrap="balance" onBackground="neutral-strong">
               {page.metadata.title}

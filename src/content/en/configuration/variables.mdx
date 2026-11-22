@@ -1,0 +1,35 @@
+---
+title: "Environment variables"
+updatedAt: "2026-11-22"
+summary: "Change the data folder or the agent's listening address."
+navLabel: "Variables"
+navIcon: "config"
+---
+
+| Variable | Default | Purpose |
+|---|---|---|
+| `FOYER_DATA` | `C:\Foyer` or `/var/lib/foyer` | Data folder: token, certificate, servers |
+| `FOYER_ADDR` | `0.0.0.0:7878` | Address and port the agent listens on |
+
+## Example on Linux
+
+To put the data on another disk, edit the service:
+
+```bash
+sudo systemctl edit foyer
+```
+
+Add:
+
+```ini
+[Service]
+Environment=FOYER_DATA=/mnt/games/foyer
+```
+
+Then restart:
+
+```bash
+sudo systemctl restart foyer
+```
+
+A new data folder creates a new token and a new certificate. The app will ask you to confirm the new fingerprint.

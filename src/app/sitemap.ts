@@ -1,16 +1,20 @@
 import { getPages } from "@/app/utils/utils";
+import { alternates, localePath, locales } from "@/i18n";
 import { baseURL } from "@/resources";
 
-export default async function sitemap() {
-  const pages = getPages(["src", "content"]).map((post) => ({
-    url: `${baseURL}/${post.slug}`,
-    lastModified: post.metadata.updatedAt,
-  }));
+const absolute = (path: string) => `${baseURL}${path === "/" ? "" : path}`;
 
-  const routes = pages.map((route) => ({
-    url: `${baseURL}/${route}`,
-    lastModified: new Date().toISOString().split("T")[0],
-  }));
-
-  return [...routes, ...pages];
+export default function sitemap() {
+  return locales.flatMap((lang) => {
+    const pages = getPages(lang);
+    const entry = (path: string, lastModified?: string) => ({
+      url: absolute(localePath(lang, path)),
+      lastModified,
+      alternates: {
+        languages: Object.fromEntries(Object.entries(alternates(lang, path).languages).map(([l, p]) => [l, absolute(p)])),
+      },
+    });
+    const latest = pages.map((p) => p.metadata.updatedAt).sort().at(-1);
+    return [entry("/", latest), ...pages.map((p) => entry(`/${p.slug}`, p.metadata.updatedAt))];
+  });
 }

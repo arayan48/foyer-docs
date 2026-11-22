@@ -1,0 +1,29 @@
+---
+title: "Réglages d'un serveur"
+updatedAt: "2026-11-22"
+summary: "RAM, processeur, démarrage automatique et redémarrage après plantage."
+navLabel: "Réglages d'un serveur"
+navIcon: "config"
+---
+
+Chaque serveur a ses propres réglages dans l'appli.
+
+| Réglage | Par défaut | Effet |
+|---|---|---|
+| RAM | 4 Go | Minecraft : mémoire donnée à Java (`-Xms` et `-Xmx`), réservée dès le lancement. De 512 Mo à 64 Go. FiveM : ne sert que si la RAM est bloquée. |
+| Bloquer la RAM | Non | Plafonne la mémoire. Minecraft garde une marge de 25 % (512 Mo au moins) au-dessus de la RAM choisie, car Java en utilise hors du tas. |
+| Limite processeur | Aucune | De 5 à 100 % du processeur de la machine. |
+| Cœurs | Tous | Attache le serveur à certains cœurs, utile avec plusieurs serveurs. |
+| Démarrage automatique | Non | Lance le serveur au démarrage de la machine. |
+| Redémarrage après plantage | Oui | Relance après 5 s, 3 essais au plus sur 10 minutes. |
+| Port | Selon le jeu | Minecraft : modifiable serveur arrêté. FiveM : se règle dans txAdmin. |
+
+## Plusieurs serveurs sur une machine
+
+- Laissez au moins 2 Go de RAM libres pour le système.
+- Donnez des ports différents à chaque serveur.
+- Sur un processeur à 8 cœurs ou plus, répartissez les serveurs sur des cœurs distincts pour qu'ils ne se gênent pas.
+
+## Arrêt propre
+
+Foyer envoie d'abord la commande d'arrêt du jeu (`stop` pour Minecraft), puis attend 30 secondes que le monde soit sauvegardé. Passé ce délai, le processus est forcé.

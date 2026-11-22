@@ -1,0 +1,61 @@
+---
+title: "Linux server"
+updatedAt: "2026-11-22"
+summary: "Install the Foyer agent as a systemd service on Linux."
+navLabel: "Linux server"
+navIcon: "server"
+---
+
+On Linux, the agent runs as a `systemd` service with no interface. You control it from the app installed on your PC.
+
+## Install
+
+```bash
+curl -fsSL https://foyer.cfd/install.sh | sudo sh
+```
+
+The script:
+
+1. downloads `foyer-agent` to `/usr/local/bin`;
+2. creates and starts the `foyer` service;
+3. opens port `7878` if `ufw` is active;
+4. prints the address, token and fingerprint to use in the app.
+
+## Requirements
+
+- an `x86_64` processor;
+- `systemd`, `curl` and `tar`;
+- a recent distribution: Debian, Ubuntu or similar.
+
+## Useful commands
+
+```bash
+sudo systemctl status foyer      # service status
+sudo journalctl -u foyer -f      # live log
+sudo cat /var/lib/foyer/token    # token
+sudo systemctl restart foyer     # restart the agent
+```
+
+Data lives in `/var/lib/foyer`, organised the same way as on Windows.
+
+## Firewall
+
+If you do not use `ufw`, open the agent port by hand, for example with `firewalld`:
+
+```bash
+sudo firewall-cmd --permanent --add-port=7878/tcp && sudo firewall-cmd --reload
+```
+
+On Linux, the agent does not open the game ports: open them by hand. See [Network and ports](/configuration/reseau).
+
+## Update
+
+Run the install command again: it replaces the agent and restarts the service. Stop your game servers first.
+
+## Uninstall
+
+```bash
+curl -fsSL https://foyer.cfd/install.sh | sudo sh -s -- --desinstaller
+```
+
+Data stays in `/var/lib/foyer`. Delete that folder by hand to remove everything.

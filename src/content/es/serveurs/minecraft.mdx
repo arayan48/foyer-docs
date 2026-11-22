@@ -1,0 +1,60 @@
+---
+title: "Minecraft"
+updatedAt: "2026-11-22"
+summary: "Servidor Paper: RAM y procesador según el número de jugadores, y los ajustes que importan."
+navLabel: "Minecraft"
+navIcon: "components"
+---
+
+Foyer instala **Paper**, una versión optimizada del servidor oficial de Minecraft, compatible con los plugins de Bukkit y Spigot. La versión correcta de Java se descarga automáticamente (Java 17 de 1.17 a 1.20.4, Java 21 de 1.20.5 a 1.21, Java 25 a partir de 26).
+
+## ¿Cuántos jugadores?
+
+Para un servidor Paper en supervivencia, distancia de visión 10, con algunos plugins habituales:
+
+| Jugadores simultáneos | RAM del servidor | Núcleos | Perfil |
+|---|---|---|---|
+| 1 a 5 | 2 a 3 GB | 2 | Entre amigos, pocos plugins |
+| 5 a 15 | 4 GB | 2 a 4 | Comunidad pequeña, plugins ligeros |
+| 15 a 30 | 6 GB | 4 | Comunidad activa, 20 a 40 plugins |
+| 30 a 60 | 8 a 10 GB | 4, frecuencia alta | Servidor público, minijuegos |
+| 60 o más | 10 a 12 GB | 4 o más | Prever varios servidores unidos por un proxy |
+
+Estas cifras son estimaciones para un servidor entre amigos o una comunidad pequeña, no mediciones. Los proveedores suelen aconsejar más: [WinterNode](https://winternode.com/blog/minecraft/how-much-ram-minecraft-server) recomienda de 6 a 8 GB para un servidor pequeño con plugins. Si su máquina tiene margen, use esa cifra.
+
+**Ejemplo: 2 núcleos y 4 GB de RAM para el servidor.** Cuente con unos diez jugadores, con una distancia de visión de 8. Si toda la máquina tiene solo 4 GB, dé 2 GB al servidor y cuente con 5 jugadores. Las granjas automáticas y los mundos muy explorados reducen esta cifra.
+
+Por encima de 12 GB, añadir RAM ya no ayuda: el límite es el procesador. Un servidor Minecraft ejecuta el mundo en un solo hilo principal, por lo que la frecuencia importa más que el número de núcleos.
+
+## Lo que consume
+
+- **Los jugadores que exploran.** Generar chunks nuevos es costoso. Pregenere el mundo con el plugin Chunky antes de abrir.
+- **Las entidades.** Granjas de mobs, granjas de aldeanos, objetos en el suelo.
+- **La redstone y las tolvas.** Una fábrica grande de tolvas puede hacer caer los TPS.
+- **Algunos plugins.** Un plugin mal escrito cuesta más que diez jugadores.
+
+## Ajustes que conviene conocer
+
+En la pestaña Propriétés (Propiedades) de la aplicación (`server.properties`):
+
+| Clave | Consejo |
+|---|---|
+| `view-distance` | 8 a 10. Cada paso adicional aumenta mucho la carga. |
+| `simulation-distance` | 6 a 8. Distancia en la que los mobs y los cultivos están activos. |
+| `max-players` | Según la tabla anterior. |
+| `online-mode` | `true` para verificar las cuentas de Mojang. |
+| `white-list` | `true` para un servidor entre amigos. |
+
+## Comprobar que aguanta
+
+En la consola, escriba:
+
+```text
+tps
+```
+
+El servidor debe mostrar **20 TPS**. Si se mantiene por debajo de 18, los jugadores notan ralentizaciones: baje la distancia de visión o busque la causa con el perfilador integrado de Paper (`spark profiler`).
+
+## Puertos
+
+TCP `25565` por defecto. Para varios servidores, use `25566`, `25567`, etc.

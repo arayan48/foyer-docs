@@ -1,0 +1,61 @@
+---
+title: "Serveur Linux"
+updatedAt: "2026-11-22"
+summary: "Installer l'agent Foyer en service systemd sur Linux."
+navLabel: "Serveur Linux"
+navIcon: "server"
+---
+
+Sur Linux, l'agent tourne en service `systemd`, sans interface. Vous le pilotez depuis l'appli installée sur votre PC.
+
+## Installer
+
+```bash
+curl -fsSL https://foyer.cfd/install.sh | sudo sh
+```
+
+Le script :
+
+1. télécharge `foyer-agent` dans `/usr/local/bin` ;
+2. crée et démarre le service `foyer` ;
+3. ouvre le port `7878` si `ufw` est actif ;
+4. affiche l'adresse, le jeton et l'empreinte à saisir dans l'appli.
+
+## Prérequis
+
+- processeur `x86_64` ;
+- `systemd`, `curl` et `tar` ;
+- une distribution récente : Debian, Ubuntu ou équivalent.
+
+## Commandes utiles
+
+```bash
+sudo systemctl status foyer      # état du service
+sudo journalctl -u foyer -f      # journal en direct
+sudo cat /var/lib/foyer/token    # jeton
+sudo systemctl restart foyer     # redémarrer l'agent
+```
+
+Les données sont dans `/var/lib/foyer`, avec la même organisation que sur Windows.
+
+## Pare-feu
+
+Si vous n'utilisez pas `ufw`, ouvrez le port de l'agent à la main, par exemple avec `firewalld` :
+
+```bash
+sudo firewall-cmd --permanent --add-port=7878/tcp && sudo firewall-cmd --reload
+```
+
+Sous Linux, l'agent n'ouvre pas les ports des jeux : ouvrez-les à la main. Voir [Réseau et ports](/configuration/reseau).
+
+## Mettre à jour
+
+Relancez la commande d'installation : elle remplace l'agent et redémarre le service. Arrêtez vos serveurs de jeu avant.
+
+## Désinstaller
+
+```bash
+curl -fsSL https://foyer.cfd/install.sh | sudo sh -s -- --desinstaller
+```
+
+Les données restent dans `/var/lib/foyer`. Supprimez ce dossier à la main pour tout effacer.
