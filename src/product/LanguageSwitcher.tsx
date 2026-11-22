@@ -5,14 +5,21 @@ import { usePathname } from "next/navigation";
 
 export function LanguageSwitcher({ lang }: { lang: Locale }) {
   const path = stripLocale(usePathname());
+
+  const change = (next: string) => {
+    document.cookie = `${localeCookie}=${next}; path=/; max-age=31536000; samesite=lax`;
+    // la balise html change de langue, il faut un vrai chargement
+    window.location.assign(localePath(next as Locale, path) + window.location.search);
+  };
+
   return (
-    <nav className="lang-switch" aria-label={t(lang).language}>
+    // autoComplete : sinon Firefox garde l'ancien choix après un retour en arrière
+    <select className="lang-select" aria-label={t(lang).language} autoComplete="off" value={lang} onChange={(e) => change(e.target.value)}>
       {locales.map((l) => (
-        // <a> : la balise html change de langue, il faut un vrai chargement
-        <a key={l} href={localePath(l, path)} onClick={() => { document.cookie = `${localeCookie}=${l}; path=/; max-age=31536000; samesite=lax`; }} hrefLang={l} lang={l} title={localeNames[l]} aria-label={localeNames[l]} aria-current={l === lang ? "true" : undefined}>
-          {l.toUpperCase()}
-        </a>
+        <option key={l} value={l} lang={l}>
+          {localeNames[l]}
+        </option>
       ))}
-    </nav>
+    </select>
   );
 }
