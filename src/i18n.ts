@@ -9,6 +9,23 @@ export function isLocale(value: string | undefined): value is Locale {
   return locales.includes(value as Locale);
 }
 
+export const localeCookie = "lang";
+
+/** Première langue proposée du navigateur ; sans en-tête (robots) : français, aucune connue : anglais. */
+export function detectLocale(header: string | null): Locale {
+  const wanted = (header ?? "")
+    .split(",")
+    .map((part) => {
+      const [tag, ...params] = part.trim().toLowerCase().split(";");
+      const q = params.map((x) => x.trim()).find((x) => x.startsWith("q="));
+      return { lang: tag.split("-")[0], q: q ? Number(q.slice(2)) : 1 };
+    })
+    .filter((x) => x.lang && x.lang !== "*" && x.q > 0)
+    .sort((x, y) => y.q - x.q);
+  if (wanted.length === 0) return defaultLocale;
+  return wanted.map((x) => x.lang).find(isLocale) ?? "en";
+}
+
 /** Retire le préfixe de langue : /en/a → /a, /en → /. */
 export function stripLocale(pathname: string): string {
   const [first, ...rest] = pathname.split("/").filter(Boolean);
