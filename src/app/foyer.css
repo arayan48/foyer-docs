@@ -27,10 +27,19 @@ main td { color: var(--neutral-on-background-medium); }
 @media (max-width: 640px) { main table { display: block; overflow-x: auto; white-space: nowrap; } }
 
 /* Choix de la langue */
-.lang-select { appearance: none; -webkit-appearance: none; height: 32px; padding: 0 28px 0 12px; border: 1px solid var(--neutral-alpha-medium); border-radius: 999px; background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='%2397958e' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 4.5 6 7.5 9 4.5'/%3E%3C/svg%3E") no-repeat right 10px center / 12px; color: var(--neutral-on-background-strong); font: 500 0.8rem var(--font-body); cursor: pointer; }
-.lang-select:hover { background-color: var(--neutral-alpha-weak); }
-.lang-select:focus-visible { outline: 2px solid var(--scheme-orange-600); outline-offset: 2px; }
-.lang-select option { background: var(--page-background); color: var(--neutral-on-background-strong); }
-@media (max-width: 768px) { .lang-select { font-size: 16px; } }
+.lang-menu { position: relative; }
+.lang-menu summary { list-style: none; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 999px; cursor: pointer; color: var(--neutral-on-background-strong); }
+.lang-menu summary::-webkit-details-marker { display: none; }
+.lang-menu summary:hover, .lang-menu[open] summary { background: var(--neutral-alpha-weak); }
+.lang-menu ul { position: absolute; top: calc(100% + 8px); right: 0; z-index: 10; min-width: 168px; margin: 0; padding: 6px; list-style: none; border: 1px solid var(--neutral-alpha-medium); border-radius: 14px; background: var(--page-background); box-shadow: 0 18px 40px -16px rgb(0 0 0 / 0.55); }
+.lang-menu a { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 9px 12px; border-radius: 10px; font: 500 0.9rem var(--font-body); color: var(--neutral-on-background-strong); text-decoration: none; }
+.lang-menu a:hover { background: var(--neutral-alpha-weak); }
+.lang-menu a:active { background: var(--neutral-alpha-medium); }
+.lang-menu a[aria-current] { color: var(--brand-on-background-medium); }
+.lang-menu summary:focus-visible, .lang-menu a:focus-visible { outline: 2px solid var(--scheme-orange-600); outline-offset: 2px; }
+@media (prefers-reduced-motion: no-preference) {
+  .lang-menu[open] ul { animation: lang-in 0.16s ease-out; transform-origin: top right; }
+  @keyframes lang-in { from { opacity: 0; transform: translateY(-4px) scale(0.97); } }
+}
 
 @media (max-width: 768px) { .page-content { padding-inline: 16px; } }
